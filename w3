@@ -1,0 +1,45 @@
+################################################
+# 以下為導入 brython_robot 進行動態模擬的起始內容
+################################################
+# 導入 brython_robot.py 並設為 robot
+import brython_robot as robot
+# 導入 Brython browser 模組中的 timer
+# 以便讓 AnimatedRobot 可以正常運作
+from browser import timer
+
+# 初始化世界與機器人
+# 利用 robot 物件中的 World 方法
+# 建立一個 10x10 的模擬世界
+size = int(input("請輸入網格尺寸:  "))
+w = robot.World(size, size)
+# 利用 robot 物件的 AnimatedRobot 方法
+# 針對 w 進行動態模擬, 且讓機器人位於 (1, 1)
+r = robot.AnimatedRobot(w, 1, 1)
+################################################
+# 範例 1
+# 基本變數與數值操作
+################################################
+
+def turn_right():
+    r.turn_left()
+    r.turn_left()
+    r.turn_left()
+    
+def walk_two_line():
+    r.move(size-1)
+    r.turn_left()
+    r.move(1)
+    r.turn_left()
+    r.move(size-1)
+    turn_right()
+    r.move(1)
+    turn_right()
+    
+for i in range(size//2):
+    walk_two_line()
+if size % 2 == 1:
+    r.move(size-1)
+    
+# r 為透過上列程式所建立的動態模擬機器人物件
+# 讓機器人往前移動 steps 步數
+r.move(steps)
