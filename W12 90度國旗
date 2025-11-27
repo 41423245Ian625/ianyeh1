@@ -1,0 +1,59 @@
+from browser import document as doc
+from browser import html
+import math
+
+# 建立畫布
+canvas = html.CANVAS(width=400, height=400)
+canvas.id = "taiwan_flag"
+doc["brython_div1"] <= canvas
+ctx = canvas.getContext("2d")
+
+flag_w = canvas.width
+flag_h = canvas.height
+
+# 將座標原點移到畫布中心，方便旋轉
+ctx.translate(flag_w/2, flag_h/2)
+ctx.rotate(math.pi/2)  # 旋轉 90 度
+
+# 國旗尺寸（縮小一點，避免旋轉後超出畫布）
+flag_width = flag_w * 0.6
+flag_height = flag_h * 0.4
+x0 = -flag_width/2
+y0 = -flag_height/2
+
+# 畫紅底
+ctx.fillStyle = 'rgb(255,0,0)'
+ctx.fillRect(x0, y0, flag_width, flag_height)
+
+# 畫藍天（左上角）
+ctx.fillStyle = 'rgb(0,0,150)'
+ctx.fillRect(x0, y0, flag_width/2, flag_height/2)
+
+# 白日光芒中心
+circle_x = x0 + flag_width/4
+circle_y = y0 + flag_height/4
+
+# 畫白日 12 光芒（內外半徑交錯）
+ctx.beginPath()
+outer_radius = flag_width/8
+inner_radius = outer_radius/2
+for i in range(12):
+    angle_outer = i * 2 * math.pi / 12
+    angle_inner = angle_outer + math.pi / 12
+    ctx.lineTo(circle_x + outer_radius*math.cos(angle_outer), circle_y + outer_radius*math.sin(angle_outer))
+    ctx.lineTo(circle_x + inner_radius*math.cos(angle_inner), circle_y + inner_radius*math.sin(angle_inner))
+ctx.closePath()
+ctx.fillStyle = '#fff'
+ctx.fill()
+
+# 藍圈
+ctx.beginPath()
+ctx.arc(circle_x, circle_y, flag_width*17/240, 0, math.pi*2)
+ctx.fillStyle = 'rgb(0,0,149)'
+ctx.fill()
+
+# 白心
+ctx.beginPath()
+ctx.arc(circle_x, circle_y, flag_width/16, 0, math.pi*2)
+ctx.fillStyle = '#fff'
+ctx.fill()
